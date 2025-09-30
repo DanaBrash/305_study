@@ -1,16 +1,18 @@
 
-variable "location" {
-  description = "The Azure region where resources will be created."
-  type        = string
-  default     = "West US 2"
-}
-
-variable "subscription_id" {
-  description = "The Azure subscription ID."
-  type        = string
-}
-
-variable "tenant_id" {
-  description = "The Azure tenant ID."
-  type        = string
+variable "rgs" {
+  description = "A list of resource groups to create."
+  type = list(object({
+    name     = string
+    location = string
+  }))
+  default = [
+    {
+      name     = "rg1"
+      location = "westus2"
+    },
+    {
+      name     = "rg2"
+      location = "westcentralus"
+    }
+  ]
 }

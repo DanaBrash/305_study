@@ -15,11 +15,20 @@ provider "azurerm" {
 
 }
 
+module "naming" {
+  source = "git::https://github.com/DanaBrash/calabashnaming.git"
+  suffix = local.suffix
+}
 
 module "rg1" {
-  source   = "./modules/rg"
-  rgname   = "rg01"
-  location = local.primary_location
+  source   = "./modules/resource_group"
+  rgs = [
+    {
+      name     = local.rgname
+      location = local.primary_location
+    }
+  ]
+
 }
 
 # call your module like normal
@@ -31,7 +40,6 @@ module "mysql_stack" {
   admin_user       = local.admin_user
   admin_password   = local.admin_password
 }
-
 
 # one thing to target
 resource "null_resource" "go" {
