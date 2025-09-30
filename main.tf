@@ -15,13 +15,6 @@ provider "azurerm" {
 
 }
 
-locals {
-  rgname           = azurerm_resource_group.rg1.name
-  primary_location = "westus2"       # e.g., "East US"
-  replica_location = "westcentralus" # e.g., "West US"
-  admin_user       = "msqladmin"
-  admin_password   = "P@ssw0rd1234!@#$" # store in KV in real use
-}
 
 module "rg1" {
   source   = "./modules/rg"
