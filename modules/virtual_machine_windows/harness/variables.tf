@@ -1,4 +1,3 @@
-
 variable "location" {
   description = "The Azure region where resources will be created."
   type        = string
@@ -8,20 +7,24 @@ variable "location" {
 variable "subscription_id" {
   description = "The Azure subscription ID."
   type        = string
+  default     = "c1b1f12b-41c7-4fb3-b5ac-02e36ce1331e"
+
 }
 
 variable "tenant_id" {
   description = "The Azure tenant ID."
   type        = string
+  default     = "6dd7381d-4ace-410a-b7f3-011a192ebe60"
 }
 
-variable "rgname" {
+variable "rg" {
   description = "Single resource group definition."
-  type = string 
-  default = "rg1"
-}
-
-variable "subnet_id" {
-  description = "The ID of the subnet where the VM will be deployed."
-  type        = string
+  type = object({
+    name     = string
+    location = string
+  })
+  default = {
+      name     = "rg1"
+      location = "westus2"
+    }
 }

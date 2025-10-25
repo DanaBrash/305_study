@@ -14,3 +14,8 @@ variable "tenant_id" {
   description = "The Azure tenant ID."
   type        = string
 }
+
+variable "kv_name" {
+  description = "Name of the key vault to create."
+  type        = string
+}
