@@ -19,13 +19,3 @@ variable "domain_name" {
   description = "The domain name for the deployment."
   type        = string
 }
-
-variable "state_config" {
-  description = "Configuration for remote state storage."
-  type = object({
-    resource_group_name  = string
-    storage_account_name = string
-    container_name       = string
-    key                  = string
-  })
-}

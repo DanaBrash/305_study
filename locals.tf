@@ -8,6 +8,18 @@ locals {
   admin_user       = "305admin"
   admin_password   = "P@ssw0rd1234!@#$" # store in KV in real use
 
+  # resource groups
+  rgs = [
+    {
+      name     = module.naming.resource_group.name
+      location = local.primary_location
+    },
+    {
+      name     = module.naming.resource_group.name
+      location = local.primary_location
+    }
+  ]
+
   # vnets for firewall module
   fw_vnets = [
     {
@@ -68,4 +80,16 @@ locals {
     }
   ]
 
+  # make sure whatever you put here exists.  just the name, we concat with the domain in the KV module
+  key_vault_readers = [
+    # add user principal names as needed
+    "key_reader_1", "key_reader_2", "key_reader_3"
+  ]
+
+  key_vault_contributors = [
+    # add user principal names as needed
+    "key_contributor_1", "key_contributor_2"
+  ]
 }
+
+

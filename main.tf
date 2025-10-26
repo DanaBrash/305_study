@@ -8,12 +8,6 @@ terraform {
   }
 }
 
-provider "azurerm" {
-  features {}
-  subscription_id = var.subscription_id
-  tenant_id       = var.tenant_id
-
-}
 
 module "naming" {
   source = "git::https://github.com/DanaBrash/calabashnaming.git"
@@ -53,14 +47,14 @@ module "fw_network" {
   source          = "./modules/virtual_network"
   tenant_id       = var.tenant_id
   subscription_id = var.subscription_id
-  rgname          = local.fw_rgname 
+  rgname          = local.fw_rgname
   vnets           = local.fw_vnets
   subnets         = local.fw_subnets
 }
 
 module "fw_peering" {
   source        = "./modules/virtual_network_peering"
-  rgname        = local.fw_rgname 
+  rgname        = local.fw_rgname
   peering_vnets = local.peering_vnets
 }
 
@@ -93,10 +87,29 @@ module "virtual_machine_windows" {
   subnet_id       = module.fw_network.subnets_by_key["vnet1/subnet1-1"].id
 }
 
+module "key_vault" {
+  source = "./modules/key_vault"
+  kv_map = {
+    kv1 = {
+      name                        = module.naming.key_vault.name
+      tenant_id                   = var.tenant_id
+      rgname                      = module.rg.resource_groups_by_name[local.rgname].name
+      location                    = module.rg.resource_groups_by_name[local.rgname].location
+      sku_name                    = "standard"
+      rbac_authorization_enabled  = true
+      enabled_for_disk_encryption = true
+      soft_delete_retention_days  = 7
+      purge_protection_enabled    = false
+    }
+  }
+  key_vault_readers      = local.key_vault_readers
+  key_vault_contributors = local.key_vault_contributors
+  domain_name            = var.domain_name
+}
 
 # one thing to target, as opposed to just targeting it(?) This is what ChatGPT came up with to manage dependencies. 
 # Interesting idea, but I think modules should manage their own dependencies...
-resource "null_resource" "go" {
+resource "null_resource" "msql" {
   depends_on = [module.mysql_stack]
 }
 
