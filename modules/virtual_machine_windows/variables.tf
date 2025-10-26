@@ -28,7 +28,7 @@ variable "vm_config" {
       name                          = string
       subnet_id                     = string
       private_ip_address_allocation = string
-      ip_configuration = map(object({
+      ip_configuration = list(object({
         name                          = string
         subnet_id                     = string
         private_ip_address_allocation = string
@@ -49,36 +49,16 @@ variable "vm_config" {
       os_disk_caching              = "ReadWrite"
       os_disk_storage_account_type = "Standard_LRS"
       vnet_interface = {
-        name                          = "vnet_interface1"
-        subnet_id                     = var.subnet_id
-        private_ip_address_allocation = "Dynamic"
-        ip_configuration = {
-          name                          = "ipconfig1"
-          subnet_id                     = var.subnet_id
+        v_int1 = {
+          name                          = "vnet_interface1"
+          subnet_id                     = ""
           private_ip_address_allocation = "Dynamic"
+          ip_configuration = {
+            name                          = "ipconfig1"
+            subnet_id                     = ""
+            private_ip_address_allocation = "Dynamic"
+          }
         }
-      }
-      image_publisher = "MicrosoftWindowsServer"
-      image_offer     = "WindowsServer"
-      image_sku       = "2019-Datacenter"
-      image_version   = "latest"
-    },
-    vm2 = {
-      name                         = "vm2"
-      size                         = "Standard_B2ms"
-      admin_username               = "adminuser"
-      admin_password               = "P@ssw0rd1234!"
-      os_disk_caching              = "ReadWrite"
-      os_disk_storage_account_type = "Standard_LRS"
-      vnet_interface = {
-        name                          = "vnet_interface1"
-        subnet_id                     = var.subnet_id
-        private_ip_address_allocation = "Dynamic"
-      }
-      ip_configuration = {
-        name                          = "ipconfig1"
-        subnet_id                     = var.subnet_id
-        private_ip_address_allocation = "Dynamic"
       }
       image_publisher = "MicrosoftWindowsServer"
       image_offer     = "WindowsServer"
